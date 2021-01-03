@@ -3,6 +3,8 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
+import javax.swing.table.TableColumnModel;
+
 import net.proteanit.sql.DbUtils;
 import javax.swing.JTable;
 import javax.swing.JPanel;
@@ -51,8 +53,8 @@ public class historyView {
 	 */
 		connection = sqlConnector.connector();
 		frame = new JFrame();
-		frame.setSize(745, 390);
-		frame.setResizable(false);
+		frame.setBounds(100, 100, 820, 420);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		btnLoadData = new JButton("Load Data");
@@ -62,23 +64,35 @@ public class historyView {
 					String query = "select * from history";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
-					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					TableColumnModel tcm= table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(80);
+					tcm.getColumn(3).setPreferredWidth(80);
+					tcm.getColumn(4).setPreferredWidth(80);
+					tcm.getColumn(5).setPreferredWidth(80);
+					tcm.getColumn(6).setPreferredWidth(200);
+					tcm.getColumn(7).setPreferredWidth(85);
+					tcm.getColumn(8).setPreferredWidth(85);
+					tcm.getColumn(9).setPreferredWidth(85);
+					tcm.getColumn(10).setPreferredWidth(150);
 				} catch (SQLException e){
 					JOptionPane.showMessageDialog(null, e);
 				}
 				
 			}
 		});
-		btnLoadData.setBounds(314, 0, 117, 25);
+		btnLoadData.setBounds(342, 12, 117, 25);
 		frame.getContentPane().add(btnLoadData);
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 67, 721, 274);
+		scrollPane.setBounds(12, 67, 796, 304);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setRowHeight(25);
 		scrollPane.setViewportView(table);
 		
 		btnShowAllInserted = new JButton("Show all inserted");
@@ -88,14 +102,25 @@ public class historyView {
 					String query = "call ShowAll('Insert')";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
-					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					TableColumnModel tcm= table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(80);
+					tcm.getColumn(3).setPreferredWidth(80);
+					tcm.getColumn(4).setPreferredWidth(80);
+					tcm.getColumn(5).setPreferredWidth(80);
+					tcm.getColumn(6).setPreferredWidth(200);
+					tcm.getColumn(7).setPreferredWidth(85);
+					tcm.getColumn(8).setPreferredWidth(85);
+					tcm.getColumn(9).setPreferredWidth(85);
+					tcm.getColumn(10).setPreferredWidth(150);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
 			}
 		});
-		btnShowAllInserted.setBounds(150, 30, 158, 25);
+		btnShowAllInserted.setBounds(172, 30, 158, 25);
 		frame.getContentPane().add(btnShowAllInserted);
 		
 		btnShowAllUpdated = new JButton("Show all updated");
@@ -105,14 +130,25 @@ public class historyView {
 					String query = "call ShowAll('Update')";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
-					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					TableColumnModel tcm= table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(80);
+					tcm.getColumn(3).setPreferredWidth(80);
+					tcm.getColumn(4).setPreferredWidth(80);
+					tcm.getColumn(5).setPreferredWidth(80);
+					tcm.getColumn(6).setPreferredWidth(200);
+					tcm.getColumn(7).setPreferredWidth(85);
+					tcm.getColumn(8).setPreferredWidth(85);
+					tcm.getColumn(9).setPreferredWidth(85);
+					tcm.getColumn(10).setPreferredWidth(150);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
 			}
 		});
-		btnShowAllUpdated.setBounds(437, 30, 158, 25);
+		btnShowAllUpdated.setBounds(471, 30, 158, 25);
 		frame.getContentPane().add(btnShowAllUpdated);
 	}
 }

@@ -1,11 +1,15 @@
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.sql.*;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.proteanit.sql.DbUtils;
@@ -18,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JTextArea;
 
 public class issueView {
 
@@ -38,13 +43,12 @@ public class issueView {
 			}
 		});
 	}
-
 	/**
 	 * Create the application.
 	 */
 	Connection connection = null;
 	private JTextField textField;
-	private JTextField textField_1;
+	private JTextArea textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
 	private JTable table;
@@ -52,16 +56,9 @@ public class issueView {
 	
 	public issueView() {
 		connection = sqlConnector.connector();
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 844, 400);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setBounds(100, 100, 820, 420);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblTitle = new JLabel("Title");
@@ -73,23 +70,23 @@ public class issueView {
 		frame.getContentPane().add(lblDescription);
 		
 		JLabel lblProjectId = new JLabel("Project ID");
-		lblProjectId.setBounds(16, 120, 70, 15);
+		lblProjectId.setBounds(16, 166, 70, 15);
 		frame.getContentPane().add(lblProjectId);
 		
 		JLabel lblAssignedDeveloper = new JLabel("Assigned Developer");
-		lblAssignedDeveloper.setBounds(16, 156, 141, 15);
+		lblAssignedDeveloper.setBounds(16, 202, 141, 15);
 		frame.getContentPane().add(lblAssignedDeveloper);
 		
 		JLabel lblStatus = new JLabel("Status");
-		lblStatus.setBounds(16, 192, 70, 15);
+		lblStatus.setBounds(16, 238, 70, 15);
 		frame.getContentPane().add(lblStatus);
 		
 		JLabel lblPriority = new JLabel("Priority");
-		lblPriority.setBounds(16, 228, 70, 15);
+		lblPriority.setBounds(16, 310, 70, 15);
 		frame.getContentPane().add(lblPriority);
 		
 		JLabel lblType = new JLabel("Type");
-		lblType.setBounds(16, 264, 70, 15);
+		lblType.setBounds(16, 274, 70, 15);
 		frame.getContentPane().add(lblType);
 
 		JLabel lblIssueId = new JLabel("Issue ID");
@@ -101,46 +98,49 @@ public class issueView {
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(190, 84, 141, 19);
+		textField_1 = new JTextArea();
+		textField_1.setLineWrap(true);
+		textField_1.setBounds(190, 84, 141, 60);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(190, 120, 141, 19);
+		textField_2.setBounds(190, 166, 141, 19);
 		frame.getContentPane().add(textField_2);
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(190, 156, 141, 19);
+		textField_3.setBounds(190, 202, 141, 19);
 		frame.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
 
 		textField_4 = new JTextField();
+		textField_4.setEditable(false);
 		textField_4.setBounds(190, 12, 141, 19);
 		frame.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 
 		String status[] = {"Open", "Closed"};
 		JComboBox comboBox = new JComboBox(status);
-		comboBox.setBounds(190, 187, 141, 24);
+		comboBox.setBounds(190, 238, 141, 24);
 		frame.getContentPane().add(comboBox);
 		
 		String priority[] = {"Low", "Medium", "High"};
 		JComboBox comboBox_1 = new JComboBox(priority);
-		comboBox_1.setBounds(190, 223, 141, 24);
+		comboBox_1.setBounds(190, 310, 141, 24);
 		frame.getContentPane().add(comboBox_1);
 		
 		String type[] = {"Bug", "Feature", "Error", "Other"};
 		JComboBox comboBox_2 = new JComboBox(type);
-		comboBox_2.setBounds(190, 259, 141, 24);
+		comboBox_2.setBounds(190, 274, 141, 24);
 		frame.getContentPane().add(comboBox_2);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(360, 12, 472, 339);
+		scrollPane.setBounds(360, 12, 448, 359);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
+		table.setRowHeight(25);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -199,14 +199,24 @@ public class issueView {
 					String query = "select * from issue";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
-					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					TableColumnModel tcm = table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(70);
+					tcm.getColumn(1).setPreferredWidth(70);
+					tcm.getColumn(2).setPreferredWidth(100);
+					tcm.getColumn(3).setPreferredWidth(100);
+					tcm.getColumn(4).setPreferredWidth(200);
+					tcm.getColumn(5).setPreferredWidth(300);
+					tcm.getColumn(6).setPreferredWidth(150);
+					tcm.getColumn(7).setPreferredWidth(85);
+					tcm.getColumn(8).setPreferredWidth(85);
+					tcm.getColumn(9).setPreferredWidth(85);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
 			}
 		});
-		btnRefresh.setBounds(242, 318, 100, 25);
+		btnRefresh.setBounds(242, 346, 100, 25);
 		frame.getContentPane().add(btnRefresh);
 		
 		JButton btnUpdate = new JButton("Update");
@@ -241,7 +251,7 @@ public class issueView {
 				}
 			}
 		});
-		btnUpdate.setBounds(128, 318, 100, 25);
+		btnUpdate.setBounds(128, 346, 100, 25);
 		frame.getContentPane().add(btnUpdate);
 		
 		JButton btnInsert = new JButton("Insert");
@@ -274,8 +284,7 @@ public class issueView {
 				}
 			}
 		});
-		btnInsert.setBounds(16, 318, 100, 25);
+		btnInsert.setBounds(16, 346, 100, 25);
 		frame.getContentPane().add(btnInsert);
-		
 	}
 }

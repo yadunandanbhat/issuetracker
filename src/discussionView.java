@@ -3,6 +3,8 @@ import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumnModel;
+
 import net.proteanit.sql.DbUtils;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -40,16 +42,9 @@ public class discussionView {
 	Connection connection = null;
 	public discussionView() {
 		connection = sqlConnector.connector();
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 820, 420);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblEnterSpecificIssueid = new JLabel("Enter specific issueID");
@@ -67,11 +62,17 @@ public class discussionView {
 				String query = "select * from comments where issueID = ?";
 				PreparedStatement pst;
 				ResultSet rs;
+				TableColumnModel tcm;
 				try {
 					pst = connection.prepareStatement(query);
 					pst.setInt(1, Integer.parseInt(textField.getText()));
 					rs = pst.executeQuery();
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					tcm = table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(300);
+					tcm.getColumn(3).setPreferredWidth(250);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
@@ -86,11 +87,17 @@ public class discussionView {
 				String query = "select * from attachments where issueID = ?";
 				PreparedStatement pst;
 				ResultSet rs;
+				TableColumnModel tcm;
 				try {
 					pst = connection.prepareStatement(query);
 					pst.setInt(1, Integer.parseInt(textField.getText()));
 					rs = pst.executeQuery();
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					tcm = table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(300);
+					tcm.getColumn(3).setPreferredWidth(250);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
@@ -150,5 +157,6 @@ public class discussionView {
 		table = new JTable();
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollPane.setViewportView(table);
+		table.setRowHeight(25);
 	}
 }

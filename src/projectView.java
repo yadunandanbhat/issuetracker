@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 import net.proteanit.sql.DbUtils;
@@ -52,16 +53,9 @@ public class projectView {
 	Connection connection = null;
 	public projectView() {
 		connection = sqlConnector.connector();
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 820, 420);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		JLabel lblProjectId = new JLabel("Project ID");
@@ -124,6 +118,7 @@ public class projectView {
 			}
 		});
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		table.setRowHeight(25);
 		scrollPane.setViewportView(table);
 		
 		textField_2 = new JTextField();
@@ -202,8 +197,14 @@ public class projectView {
 					String query = "select * from project";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
-					
 					table.setModel(DbUtils.resultSetToTableModel(rs));
+					TableColumnModel tcm = table.getColumnModel();
+					tcm.getColumn(0).setPreferredWidth(80);
+					tcm.getColumn(1).setPreferredWidth(80);
+					tcm.getColumn(2).setPreferredWidth(100);
+					tcm.getColumn(3).setPreferredWidth(200);
+					tcm.getColumn(4).setPreferredWidth(150);
+					tcm.getColumn(5).setPreferredWidth(80);
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
