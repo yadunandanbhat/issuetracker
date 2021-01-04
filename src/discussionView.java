@@ -1,10 +1,15 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.*;
 import javax.swing.JFrame;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 
+import jiconfont.icons.font_awesome.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +29,9 @@ public class discussionView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+	    } catch(Exception ignored){}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -46,6 +54,7 @@ public class discussionView {
 		frame.setBounds(100, 100, 820, 420);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		IconFontSwing.register(FontAwesome.getIconFont());
 
 		JLabel lblEnterSpecificIssueid = new JLabel("Enter specific issueID");
 		lblEnterSpecificIssueid.setBounds(25, 15, 167, 15);
@@ -57,6 +66,8 @@ public class discussionView {
 		textField.setColumns(10);
 		
 		JButton btnShowTheSpecefic = new JButton("Show comments");
+		Icon showComment = IconFontSwing.buildIcon(FontAwesome.COMMENT, 15, new Color(255, 255, 255));
+		btnShowTheSpecefic.setIcon(showComment);
 		btnShowTheSpecefic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "select * from comments where issueID = ?";
@@ -82,6 +93,8 @@ public class discussionView {
 		frame.getContentPane().add(btnShowTheSpecefic);
 		
 		JButton btnShowAttachments = new JButton("Show attachments");
+		Icon showAttachments = IconFontSwing.buildIcon(FontAwesome.FILE_ARCHIVE_O, 15, new Color(255, 255, 255));
+		btnShowAttachments.setIcon(showAttachments);
 		btnShowAttachments.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "select * from attachments where issueID = ?";
@@ -115,6 +128,8 @@ public class discussionView {
 		frame.getContentPane().add(textArea_1);
 		
 		JButton btnAddComment = new JButton("Add comment");
+		Icon addComment = IconFontSwing.buildIcon(FontAwesome.COMMENTING, 15, new Color(255, 255, 255));
+		btnAddComment.setIcon(addComment);
 		btnAddComment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "INSERT INTO `comments`(`commenter`, `issueID`, `message`) VALUES (18057, ?, ?)";
@@ -133,6 +148,8 @@ public class discussionView {
 		frame.getContentPane().add(btnAddComment);
 		
 		JButton btnAddAttachment = new JButton("Add attachment");
+		Icon addAttachment = IconFontSwing.buildIcon(FontAwesome.CLIPBOARD, 15, new Color(255, 255, 255));
+		btnAddAttachment.setIcon(addAttachment);
 		btnAddAttachment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "INSERT INTO `attachments`(`uploader`, `issueID`, `fileLink`) VALUES (18057, ?, ?)";

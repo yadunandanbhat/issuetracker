@@ -1,10 +1,16 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 
+import jiconfont.icons.font_awesome.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
 import javax.swing.JTable;
 import javax.swing.JPanel;
@@ -30,6 +36,9 @@ public class historyView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+	    } catch(Exception ignored){}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -56,8 +65,11 @@ public class historyView {
 		frame.setBounds(100, 100, 820, 420);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		IconFontSwing.register(FontAwesome.getIconFont());
 		
-		btnLoadData = new JButton("Load Data");
+		btnLoadData = new JButton("Refresh");
+		Icon refresh = IconFontSwing.buildIcon(FontAwesome.REFRESH, 15, new Color(255,255,255));
+		btnLoadData.setIcon(refresh);
 		btnLoadData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -96,6 +108,8 @@ public class historyView {
 		scrollPane.setViewportView(table);
 		
 		btnShowAllInserted = new JButton("Show all inserted");
+		Icon insert = IconFontSwing.buildIcon(FontAwesome.PLUS_CIRCLE, 15, new Color(255,255,255));
+		btnShowAllInserted.setIcon(insert);
 		btnShowAllInserted.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -124,6 +138,8 @@ public class historyView {
 		frame.getContentPane().add(btnShowAllInserted);
 		
 		btnShowAllUpdated = new JButton("Show all updated");
+		Icon update = IconFontSwing.buildIcon(FontAwesome.UPLOAD, 15, new Color(255,255,255));
+		btnShowAllUpdated.setIcon(update);
 		btnShowAllUpdated.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {

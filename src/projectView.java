@@ -1,17 +1,22 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import jiconfont.icons.font_awesome.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JTextArea;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
@@ -35,6 +40,9 @@ public class projectView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+	    } catch(Exception ignored){}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -54,6 +62,7 @@ public class projectView {
 	public projectView() {
 		connection = sqlConnector.connector();
 		frame = new JFrame();
+		IconFontSwing.register(FontAwesome.getIconFont());
 		frame.setBounds(100, 100, 820, 420);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -138,6 +147,8 @@ public class projectView {
 		textField_4.setColumns(10);
 		
 		JButton btnInsert = new JButton("Insert");
+		Icon insert = IconFontSwing.buildIcon(FontAwesome.PLUS_CIRCLE, 15, new Color(255,255,255));
+		btnInsert.setIcon(insert);
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String title = textField_1.getText();
@@ -164,6 +175,8 @@ public class projectView {
 		frame.getContentPane().add(btnInsert);
 		
 		JButton btnUpdate = new JButton("Update");
+		Icon update = IconFontSwing.buildIcon(FontAwesome.UPLOAD, 15, new Color(255,255,255));
+		btnUpdate.setIcon(update);
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String projectID = textField.getText();
@@ -191,6 +204,8 @@ public class projectView {
 		frame.getContentPane().add(btnUpdate);
 		
 		JButton btnRefresh = new JButton("Refresh");
+		Icon refresh = IconFontSwing.buildIcon(FontAwesome.REFRESH, 15, new Color(255,255,255));
+		btnRefresh.setIcon(refresh);
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -201,8 +216,8 @@ public class projectView {
 					TableColumnModel tcm = table.getColumnModel();
 					tcm.getColumn(0).setPreferredWidth(80);
 					tcm.getColumn(1).setPreferredWidth(80);
-					tcm.getColumn(2).setPreferredWidth(100);
-					tcm.getColumn(3).setPreferredWidth(200);
+					tcm.getColumn(2).setPreferredWidth(150);
+					tcm.getColumn(3).setPreferredWidth(250);
 					tcm.getColumn(4).setPreferredWidth(150);
 					tcm.getColumn(5).setPreferredWidth(80);
 				} catch (SQLException e) {

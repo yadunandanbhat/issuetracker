@@ -1,16 +1,21 @@
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import jiconfont.icons.font_awesome.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
 
 import java.awt.event.ActionListener;
@@ -27,6 +32,9 @@ public class userView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+	    } catch(Exception ignored){}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -49,6 +57,7 @@ public class userView {
 		frame.setBounds(100, 100, 820, 420);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		IconFontSwing.register(FontAwesome.getIconFont());
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(12, 80, 796, 290);
@@ -60,6 +69,8 @@ public class userView {
 		scrollPane.setViewportView(table);
 		
 		JButton btnShowAllUsers = new JButton("Show all users");
+		Icon users = IconFontSwing.buildIcon(FontAwesome.USERS, 15, new Color(255, 255, 255));
+		btnShowAllUsers.setIcon(users);
 		btnShowAllUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "select * from userDetails";
@@ -86,6 +97,8 @@ public class userView {
 		frame.getContentPane().add(btnShowAllUsers);
 		
 		JButton btnShowUserProject = new JButton("Show specific group");
+		Icon userGroup = IconFontSwing.buildIcon(FontAwesome.USER_O, 15, new Color(255, 255, 255));
+		btnShowUserProject.setIcon(userGroup);
 		btnShowUserProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "select * from userDetails where userGroupID = ?";
@@ -112,6 +125,8 @@ public class userView {
 		frame.getContentPane().add(btnShowUserProject);
 		
 		JButton btnShowUserRole = new JButton("Show specific role");
+		Icon userRole = IconFontSwing.buildIcon(FontAwesome.BLACK_TIE, 15, new Color(255, 255, 255));
+		btnShowUserRole.setIcon(userRole);
 		btnShowUserRole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String query = "select * from userDetails where userRole = ?";

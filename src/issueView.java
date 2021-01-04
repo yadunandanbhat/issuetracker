@@ -1,21 +1,27 @@
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.sql.*;
-
+import com.bulenkov.darcula.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import jiconfont.IconFont;
+import jiconfont.icons.font_awesome.FontAwesome;
+import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -32,6 +38,9 @@ public class issueView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try { 
+	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
+	    } catch(Exception ignored){}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -55,6 +64,7 @@ public class issueView {
 	private JTextField textField_4;
 	
 	public issueView() {
+		IconFontSwing.register(FontAwesome.getIconFont());
 		connection = sqlConnector.connector();
 		frame = new JFrame();
 		frame.setBounds(100, 100, 820, 420);
@@ -193,6 +203,8 @@ public class issueView {
 		scrollPane.setViewportView(table);
 		
 		JButton btnRefresh = new JButton("Refresh");
+		Icon refresh = IconFontSwing.buildIcon(FontAwesome.REFRESH, 15, new Color(255,255,255));
+		btnRefresh.setIcon(refresh);
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -220,6 +232,8 @@ public class issueView {
 		frame.getContentPane().add(btnRefresh);
 		
 		JButton btnUpdate = new JButton("Update");
+		Icon update = IconFontSwing.buildIcon(FontAwesome.UPLOAD, 15, new Color(255,255,255));
+		btnUpdate.setIcon(update);
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String title = textField.getText();
@@ -255,6 +269,8 @@ public class issueView {
 		frame.getContentPane().add(btnUpdate);
 		
 		JButton btnInsert = new JButton("Insert");
+		Icon insert = IconFontSwing.buildIcon(FontAwesome.PLUS_CIRCLE, 15, new Color(255,255,255));
+		btnInsert.setIcon(insert);
 		btnInsert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String title = textField.getText();

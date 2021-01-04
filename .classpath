@@ -8,5 +8,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="lib" path="lib/rs2xml.jar"/>
+	<classpathentry kind="lib" path="lib/jiconfont-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/jiconfont-bundle-1.4.0.jar"/>
+	<classpathentry kind="lib" path="lib/jiconfont-font_awesome-4.7.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/jiconfont-swing-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/darcula.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
