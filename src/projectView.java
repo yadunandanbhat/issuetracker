@@ -9,6 +9,9 @@ import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+import com.mysql.cj.util.StringUtils;
+
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
@@ -40,9 +43,7 @@ public class projectView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try { 
-	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
-	    } catch(Exception ignored){}
+		FlatNordIJTheme.install();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -62,8 +63,10 @@ public class projectView {
 	public projectView() {
 		connection = sqlConnector.connector();
 		frame = new JFrame();
+		frame.setTitle("Projects - Issue Tracker");
+		frame.setResizable(false);
 		IconFontSwing.register(FontAwesome.getIconFont());
-		frame.setBounds(100, 100, 820, 420);
+		frame.setBounds(100, 100, 1024, 576);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -71,19 +74,19 @@ public class projectView {
 		lblProjectId.setBounds(12, 24, 70, 15);
 		frame.getContentPane().add(lblProjectId);
 		
-		JLabel lblTitle = new JLabel("Title");
-		lblTitle.setBounds(12, 56, 70, 15);
+		JLabel lblTitle = new JLabel("Title *");
+		lblTitle.setBounds(12, 56, 81, 15);
 		frame.getContentPane().add(lblTitle);
 		
 		JLabel lblSummary = new JLabel("Summary");
 		lblSummary.setBounds(12, 88, 81, 15);
 		frame.getContentPane().add(lblSummary);
 		
-		JLabel lblMaintainer = new JLabel("Maintainer");
-		lblMaintainer.setBounds(12, 225, 81, 15);
+		JLabel lblMaintainer = new JLabel("Maintainer *");
+		lblMaintainer.setBounds(12, 225, 112, 15);
 		frame.getContentPane().add(lblMaintainer);
 		
-		JLabel lblAssignedGroup = new JLabel("Assigned Group");
+		JLabel lblAssignedGroup = new JLabel("Assigned Group *");
 		lblAssignedGroup.setBounds(12, 257, 112, 15);
 		frame.getContentPane().add(lblAssignedGroup);
 		
@@ -93,23 +96,23 @@ public class projectView {
 		
 		textField = new JTextField();
 		textField.setEditable(false);
-		textField.setBounds(147, 24, 150, 20);
+		textField.setBounds(147, 24, 190, 25);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
-		textField_1.setBounds(147, 56, 150, 20);
+		textField_1.setBounds(147, 56, 190, 25);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setTabSize(4);
 		textArea.setLineWrap(true);
-		textArea.setBounds(147, 88, 150, 120);
+		textArea.setBounds(147, 88, 190, 120);
 		frame.getContentPane().add(textArea);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(360, 12, 448, 371);
+		scrollPane.setBounds(373, 11, 625, 515);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -131,18 +134,18 @@ public class projectView {
 		scrollPane.setViewportView(table);
 		
 		textField_2 = new JTextField();
-		textField_2.setBounds(147, 225, 150, 19);
+		textField_2.setBounds(147, 225, 190, 25);
 		frame.getContentPane().add(textField_2);
 		textField_2.setColumns(10);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(146, 257, 151, 19);
+		textField_3.setBounds(147, 257, 190, 25);
 		frame.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
 		
 		textField_4 = new JTextField();
 		textField_4.setEditable(false);
-		textField_4.setBounds(147, 289, 150, 19);
+		textField_4.setBounds(147, 289, 190, 25);
 		frame.getContentPane().add(textField_4);
 		textField_4.setColumns(10);
 		
@@ -156,22 +159,36 @@ public class projectView {
 				String maintainer = textField_2.getText();
 				String gID = textField_3.getText();
 				
-				String query = "INSERT INTO `project`(`projectMaintainer`, `projectTitle`, `projectSummary`, `projectGroup`) VALUES (?, ?, ?, ?)";
-				PreparedStatement pst;
-				try {
-					pst = connection.prepareStatement(query);
-					pst.setInt(1, Integer.parseInt(maintainer));
-					pst.setString(2, title);
-					pst.setString(3, summary);
-					pst.setInt(4, Integer.parseInt(gID));
-					pst.execute();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					JOptionPane.showMessageDialog(null, e);
+				if (title.isBlank()) {
+					JOptionPane.showMessageDialog(null, "Title shouldn't be empty!");
+				} else {
+					if (maintainer=="" || (!maintainer.matches("[0-9]+"))){
+						JOptionPane.showMessageDialog(null, "Maintainer shouldn't be empty or characters!");
+					}
+					else {
+						if (gID=="" || (!gID.matches("[0-9]+"))) {
+							JOptionPane.showMessageDialog(null, "User Group ID shouldn't be empty or characters!");
+						}
+						else {
+							String query = "INSERT INTO `project`(`projectMaintainer`, `projectTitle`, `projectSummary`, `projectGroup`) VALUES (?, ?, ?, ?)";
+							PreparedStatement pst;
+							try {
+								pst = connection.prepareStatement(query);
+								pst.setInt(1, Integer.parseInt(maintainer));
+								pst.setString(2, title);
+								pst.setString(3, summary);
+								pst.setInt(4, Integer.parseInt(gID));
+								pst.execute();
+							} catch (SQLException e1) {
+								// TODO Auto-generated catch block
+								JOptionPane.showMessageDialog(null, e1);
+							}
+						}
+					}
 				}
 			}
 		});
-		btnInsert.setBounds(12, 330, 100, 25);
+		btnInsert.setBounds(113, 333, 146, 32);
 		frame.getContentPane().add(btnInsert);
 		
 		JButton btnUpdate = new JButton("Update");
@@ -185,22 +202,36 @@ public class projectView {
 				String maintainer = textField_2.getText();
 				String gID = textField_3.getText();
 				
-				String query = "UPDATE `project` SET `projectMaintainer`=?,`projectTitle`=?,`projectSummary`=?,`projectGroup`=? WHERE `projectID`=?";
-				PreparedStatement pst;
-				try {
-					pst = connection.prepareStatement(query);
-					pst.setInt(1, Integer.parseInt(maintainer));
-					pst.setString(2, title);
-					pst.setString(3, summary);
-					pst.setInt(4, Integer.parseInt(gID));
-					pst.setInt(5, Integer.parseInt(projectID));
-					pst.executeUpdate();
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, e);
+				if (title.isBlank()) {
+					JOptionPane.showMessageDialog(null, "Title shouldn't be empty!");
+				} else {
+					if (maintainer=="" || (!maintainer.matches("[0-9]+"))){
+						JOptionPane.showMessageDialog(null, "Maintainer shouldn't be empty or have characters!");
+					}
+					else {
+						if (gID=="" || (!gID.matches("[0-9]+"))) {
+							JOptionPane.showMessageDialog(null, "User Group ID shouldn't be empty or have  characters!");
+						}
+						else {
+								String query = "UPDATE `project` SET `projectMaintainer`=?,`projectTitle`=?,`projectSummary`=?,`projectGroup`=? WHERE `projectID`=?";
+								PreparedStatement pst;
+								try {
+									pst = connection.prepareStatement(query);
+									pst.setInt(1, Integer.parseInt(maintainer));
+									pst.setString(2, title);
+									pst.setString(3, summary);
+									pst.setInt(4, Integer.parseInt(gID));
+									pst.setInt(5, Integer.parseInt(projectID));
+									pst.executeUpdate();
+								} catch (SQLException e2) {
+									JOptionPane.showMessageDialog(null, e2);
+								}
+							}
+						}
+					}
 				}
-			}
 		});
-		btnUpdate.setBounds(130, 330, 100, 25);
+		btnUpdate.setBounds(113, 384, 146, 32);
 		frame.getContentPane().add(btnUpdate);
 		
 		JButton btnRefresh = new JButton("Refresh");
@@ -220,12 +251,32 @@ public class projectView {
 					tcm.getColumn(3).setPreferredWidth(250);
 					tcm.getColumn(4).setPreferredWidth(150);
 					tcm.getColumn(5).setPreferredWidth(80);
-				} catch (SQLException e) {
-					JOptionPane.showMessageDialog(null, e);
+				} catch (SQLException e3) {
+					JOptionPane.showMessageDialog(null, e3);
 				}
 			}
 		});
-		btnRefresh.setBounds(250, 330, 100, 25);
+		btnRefresh.setBounds(113, 435, 146, 32);
 		frame.getContentPane().add(btnRefresh);
+		
+		JButton btnDelete = new JButton("Delete");
+		Icon delete = IconFontSwing.buildIcon(FontAwesome.TIMES, 15, new Color (255,255,255));
+		btnDelete.setIcon(delete);
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String projectID = textField.getText();
+				String query = "DELETE FROM `project` WHERE `projectID` = ?";
+				PreparedStatement pst;
+				try {
+					pst = connection.prepareStatement(query);
+					pst.setInt(1, Integer.parseInt(projectID));
+					pst.execute();
+					} catch (SQLException e4) {
+						JOptionPane.showMessageDialog(null, e4);
+					}
+			}
+		});
+		btnDelete.setBounds(113, 486, 146, 32);
+		frame.getContentPane().add(btnDelete);
 	}
 }

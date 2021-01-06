@@ -14,6 +14,9 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+import com.formdev.flatlaf.*;
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
@@ -32,9 +35,7 @@ public class userView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try { 
-	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
-	    } catch(Exception ignored){}
+		FlatNordIJTheme.install();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -54,13 +55,15 @@ public class userView {
 	public userView() {
 		connection = sqlConnector.connector();
 		frame = new JFrame();
-		frame.setBounds(100, 100, 820, 420);
+		frame.setTitle("Users - Issue Tracker");
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 1024, 576);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		IconFontSwing.register(FontAwesome.getIconFont());
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 80, 796, 290);
+		scrollPane.setBounds(373, 11, 625, 515);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
@@ -69,7 +72,7 @@ public class userView {
 		scrollPane.setViewportView(table);
 		
 		JButton btnShowAllUsers = new JButton("Show all users");
-		Icon users = IconFontSwing.buildIcon(FontAwesome.USERS, 15, new Color(255, 255, 255));
+		Icon users = IconFontSwing.buildIcon(FontAwesome.USERS, 24, new Color(255, 255, 255));
 		btnShowAllUsers.setIcon(users);
 		btnShowAllUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -93,11 +96,11 @@ public class userView {
 				}
 			}
 		});
-		btnShowAllUsers.setBounds(341, 8, 138, 25);
+		btnShowAllUsers.setBounds(117, 146, 138, 40);
 		frame.getContentPane().add(btnShowAllUsers);
 		
 		JButton btnShowUserProject = new JButton("Show specific group");
-		Icon userGroup = IconFontSwing.buildIcon(FontAwesome.USER_O, 15, new Color(255, 255, 255));
+		Icon userGroup = IconFontSwing.buildIcon(FontAwesome.USER_O, 24, new Color(255, 255, 255));
 		btnShowUserProject.setIcon(userGroup);
 		btnShowUserProject.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -121,11 +124,11 @@ public class userView {
 				}
 			}
 		});
-		btnShowUserProject.setBounds(136, 38, 184, 25);
+		btnShowUserProject.setBounds(155, 226, 184, 40);
 		frame.getContentPane().add(btnShowUserProject);
 		
 		JButton btnShowUserRole = new JButton("Show specific role");
-		Icon userRole = IconFontSwing.buildIcon(FontAwesome.BLACK_TIE, 15, new Color(255, 255, 255));
+		Icon userRole = IconFontSwing.buildIcon(FontAwesome.BLACK_TIE, 24, new Color(255, 255, 255));
 		btnShowUserRole.setIcon(userRole);
 		btnShowUserRole.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -149,18 +152,18 @@ public class userView {
 				}
 			}
 		});
-		btnShowUserRole.setBounds(624, 38, 184, 25);
+		btnShowUserRole.setBounds(155, 306, 184, 40);
 		frame.getContentPane().add(btnShowUserRole);
 		
 		textField = new JTextField();
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
-		textField.setBounds(12, 38, 114, 25);
+		textField.setBounds(31, 226, 114, 40);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
 		textField_1 = new JTextField();
 		textField_1.setHorizontalAlignment(SwingConstants.CENTER);
-		textField_1.setBounds(500, 38, 114, 25);
+		textField_1.setBounds(31, 306, 114, 40);
 		frame.getContentPane().add(textField_1);
 		textField_1.setColumns(10);
 	}

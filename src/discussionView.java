@@ -8,6 +8,8 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.table.TableColumnModel;
 
+import com.formdev.flatlaf.intellijthemes.FlatNordIJTheme;
+
 import jiconfont.icons.font_awesome.FontAwesome;
 import jiconfont.swing.IconFontSwing;
 import net.proteanit.sql.DbUtils;
@@ -29,9 +31,7 @@ public class discussionView {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		try { 
-	        UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel"); 
-	    } catch(Exception ignored){}
+		FlatNordIJTheme.install();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -51,17 +51,19 @@ public class discussionView {
 	public discussionView() {
 		connection = sqlConnector.connector();
 		frame = new JFrame();
-		frame.setBounds(100, 100, 820, 420);
+		frame.setTitle("Discussions - Issue Tracker");
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 1024, 576);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		IconFontSwing.register(FontAwesome.getIconFont());
 
 		JLabel lblEnterSpecificIssueid = new JLabel("Enter specific issueID");
-		lblEnterSpecificIssueid.setBounds(25, 15, 167, 15);
+		lblEnterSpecificIssueid.setBounds(360, 20, 124, 15);
 		frame.getContentPane().add(lblEnterSpecificIssueid);
 		
 		textField = new JTextField();
-		textField.setBounds(203, 12, 114, 25);
+		textField.setBounds(494, 15, 146, 25);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 		
@@ -89,7 +91,7 @@ public class discussionView {
 				}
 			}
 		});
-		btnShowTheSpecefic.setBounds(335, 12, 149, 25);
+		btnShowTheSpecefic.setBounds(223, 53, 146, 32);
 		frame.getContentPane().add(btnShowTheSpecefic);
 		
 		JButton btnShowAttachments = new JButton("Show attachments");
@@ -116,15 +118,15 @@ public class discussionView {
 				}
 			}
 		});
-		btnShowAttachments.setBounds(502, 12, 167, 25);
+		btnShowAttachments.setBounds(633, 53, 152, 32);
 		frame.getContentPane().add(btnShowAttachments);
 		
 		JTextArea textArea = new JTextArea();
-		textArea.setBounds(130, 48, 240, 80);
+		textArea.setBounds(176, 96, 240, 80);
 		frame.getContentPane().add(textArea);
 		
 		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setBounds(450, 48, 240, 80);
+		textArea_1.setBounds(592, 96, 240, 80);
 		frame.getContentPane().add(textArea_1);
 		
 		JButton btnAddComment = new JButton("Add comment");
@@ -132,6 +134,9 @@ public class discussionView {
 		btnAddComment.setIcon(addComment);
 		btnAddComment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (textArea.getText().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Comment can't be blank while inserting!");
+				} else {
 				String query = "INSERT INTO `comments`(`commenter`, `issueID`, `message`) VALUES (18057, ?, ?)";
 				PreparedStatement pst;
 				try {
@@ -142,9 +147,10 @@ public class discussionView {
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
+				}
 			}
 		});
-		btnAddComment.setBounds(176, 134, 149, 25);
+		btnAddComment.setBounds(223, 187, 146, 32);
 		frame.getContentPane().add(btnAddComment);
 		
 		JButton btnAddAttachment = new JButton("Add attachment");
@@ -152,6 +158,9 @@ public class discussionView {
 		btnAddAttachment.setIcon(addAttachment);
 		btnAddAttachment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if (textArea.getText().isBlank()) {
+					JOptionPane.showMessageDialog(null, "Attachment can't be blank while inserting!");
+				} else {
 				String query = "INSERT INTO `attachments`(`uploader`, `issueID`, `fileLink`) VALUES (18057, ?, ?)";
 				PreparedStatement pst;
 				try {
@@ -162,13 +171,14 @@ public class discussionView {
 				} catch (SQLException e) {
 					JOptionPane.showMessageDialog(null, e);
 				}
+				}
 			}
 		});
-		btnAddAttachment.setBounds(487, 134, 167, 25);
+		btnAddAttachment.setBounds(639, 187, 146, 32);
 		frame.getContentPane().add(btnAddAttachment);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(12, 174, 796, 197);
+		scrollPane.setBounds(10, 229, 988, 297);
 		frame.getContentPane().add(scrollPane);
 		
 		table = new JTable();
